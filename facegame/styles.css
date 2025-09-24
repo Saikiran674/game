@@ -1,0 +1,240 @@
+/* ===============================
+   FaceBomp Styles (styles.css)
+   =============================== */
+
+/* -------- CSS Variables (Theme) -------- */
+:root {
+  --bg-start: #0ea5e9;   /* sky-400 */
+  --bg-end:   #1e3a8a;   /* indigo-900 */
+  --panel:    #0b5fb8;   /* bright blue panel */
+  --panel-2:  #094a90;   /* deeper control shade */
+  --accent:   #38bdf8;   /* cyan accent */
+  --accent-2: #93c5fd;   /* soft blue accent */
+  --text:     #eaf3ff;   /* near-white for text */
+  --shadow:   rgba(6, 24, 44, 0.4);
+  --hole-bg:  #0a3470;   /* hole ring color */
+  --hole-inner: #06244f; /* hole inner color */
+  --success:  #22c55e;
+  --warning:  #f59e0b;
+}
+
+/* -------- Base Reset / Layout -------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------- Header -------- */
+.header {
+  text-align: center;
+  padding: 1.5rem 1rem 0.5rem;
+}
+
+#game-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+  letter-spacing: 0.5px;
+  text-shadow: 0 6px 20px var(--shadow);
+}
+
+/* -------- Main Container -------- */
+.container {
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+  padding: 1rem 0 2rem;
+}
+
+/* -------- Controls / HUD -------- */
+.controls {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  background: linear-gradient(180deg, var(--panel), var(--panel-2));
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 0.85rem 1rem;
+  box-shadow:
+    0 10px 20px var(--shadow),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+#start-btn {
+  justify-self: start;
+  padding: 0.7rem 1.1rem;
+  border: 0;
+  border-radius: 12px;
+  background: radial-gradient(120% 120% at 0% 0%, var(--accent), var(--accent-2));
+  color: #053160;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(2, 132, 199, 0.45);
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+}
+
+#start-btn:hover { filter: brightness(1.05); }
+#start-btn:active { transform: translateY(1px) scale(0.99); }
+#start-btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.hud {
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.hud-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+}
+
+.label {
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+#score, #timer {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+#score { color: var(--success); }
+#timer { color: var(--warning); }
+
+/* -------- Board -------- */
+.board {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 x 2 grid */
+  grid-auto-rows: 1fr;
+  gap: clamp(0.9rem, 2.4vw, 1.25rem);
+  aspect-ratio: 3 / 2;
+  padding: clamp(0.6rem, 1.8vw, 1rem);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 16px 40px var(--shadow);
+}
+
+/* -------- Holes -------- */
+.hole {
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px;             /* circular */
+  background:
+    radial-gradient(120% 120% at 30% 30%, var(--hole-bg), var(--hole-inner));
+  border: 2px solid rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 -10px 24px rgba(0,0,0,0.45),
+    inset 0 10px 16px rgba(255,255,255,0.06),
+    0 10px 20px rgba(0,0,0,0.35);
+  transition: transform 200ms ease;
+}
+.hole:active { transform: translateY(1px); }
+.hole::before {
+  content: "";
+  display: block;
+  padding-top: 100%; /* perfect circle slot */
+}
+
+/* -------- Mole/Photo (image) -------- */
+.mole {
+  position: absolute;
+  left: 50%;
+  top: 100%;                  /* start hidden below */
+  transform: translate(-50%, -50%) scale(0.7);
+  width: 72%;
+  height: 72%;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.45),
+    inset 0 2px 4px rgba(255,255,255,0.25);
+  pointer-events: none;       /* clicks land on hole unless shown */
+  opacity: 0;
+  transition:
+    top 240ms cubic-bezier(.2,.8,.2,1),
+    transform 240ms cubic-bezier(.2,.8,.2,1),
+    opacity 180ms ease;
+  user-select: none;
+}
+.hole.is-active .mole,
+.mole.show {
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+@keyframes bop {
+  0%   { transform: translate(-50%, -48%) scale(0.96); }
+  60%  { transform: translate(-50%, -52%) scale(1.03); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+.hole.is-active .mole,
+.mole.show {
+  animation: bop 220ms ease-out;
+}
+.mole.hit {
+  transform: translate(-50%, -50%) scale(0.92);
+  filter: saturate(1.2) brightness(1.05);
+}
+
+/* -------- Final Message -------- */
+.final {
+  margin-top: 1rem;
+  min-height: 2.2rem;
+  display: grid;
+  place-items: center;
+}
+#final-message {
+  background: rgba(10, 25, 70, 0.5);
+  border: 1px solid rgba(255,255,255,0.18);
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.12);
+  font-weight: 600;
+  text-align: center;
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* -------- Responsiveness -------- */
+@media (max-width: 720px) {
+  .controls {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  #start-btn { justify-self: stretch; }
+  .hud { justify-content: space-between; }
+  .board { aspect-ratio: 3 / 2; }
+}
+@media (max-width: 480px) {
+  .hud { gap: 0.5rem; }
+  .mole { width: 78%; height: 78%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FaceBomp</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <h1 id="game-title">FaceBomp</h1>
+  </header>
+  <main class="container" aria-labelledby="game-title">
+    <section class="controls" aria-label="Game controls">
+      <button id="start-btn" type="button">Start</button>
+      <div class="hud">
+        <div class="hud-item" aria-live="polite">
+          <span class="label">Score:</span>
+          <span id="score">0</span>
+        </div>
+        <div class="hud-item" aria-live="polite">
+          <span class="label">Time:</span>
+          <span id="timer">00:30</span>
+        </div>
+      </div>
+    </section>
+    <section class="board" id="board" aria-label="Game board" role="grid" aria-rowcount="2" aria-colcount="3">
+      <div class="hole" role="gridcell" data-hole="1"><img src="photo.png" alt="Target face" class="mole" draggable="false" /></div>
+      <div class="hole" role="gridcell" data-hole="2"><img src="photo.png" alt="Target face" class="mole" draggable="false" /></div>
+      <div class="hole" role="gridcell" data-hole="3"><img src="photo.png" alt="Target face" class="mole" draggable="false" /></div>
+      <div class="hole" role="gridcell" data-hole="4"><img src="photo.png" alt="Target face" class="mole" draggable="false" /></div>
+      <div class="hole" role="gridcell" data-hole="5"><img src="photo.png" alt="Target face" class="mole" draggable="false" /></div>
+      <div class="hole" role="gridcell" data-hole="6"><img src="photo.png" alt="Target face" class="mole" draggable="false" /></div>
+    </section>
+    <section class="final" aria-live="assertive" aria-atomic="true">
+      <div id="final-message" role="alert"></div>
+    </section>
+  </main>
+</body>
+</html>
